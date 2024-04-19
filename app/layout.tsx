@@ -13,15 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "bg-backgroundLight dark:bg-backgroundDark",
-          manrope.className
-        )}
-      >
-        {children}
-      </body>
+    <html lang="en" suppressHydrationWarning className="dark">
+      <body className={cn("bg-zinc-900", manrope.className)}>{children}</body>
     </html>
   );
 }
