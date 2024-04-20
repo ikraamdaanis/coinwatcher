@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow
 } from "components/ui/table";
-import { useEffect } from "react";
 import { Coin } from "types";
 import { formatUsd } from "utils/formatUsd";
 
@@ -17,9 +16,19 @@ type Props = {
   data: Coin[];
 };
 export const CoinsTable = ({ data }: Props) => {
-  useEffect(() => {
-    console.dir(data);
-  }, [data]);
+  // useEffect(() => {
+  //   async function getIt() {
+  //     const geck = await fetch(
+  //       "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd"
+  //     );
+  //     const datageck = await geck.json();
+
+  //     console.log(datageck);
+  //   }
+
+  //   getIt();
+  //   // console.dir(data);
+  // }, [data]);
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-4 px-4 pb-4">
@@ -37,15 +46,6 @@ export const CoinsTable = ({ data }: Props) => {
         </TableHeader>
         <TableBody>
           {data.map(coin => {
-            // const name = `${coin.id.toLowerCase()}-${coin.symbol.toLowerCase()}`
-            //   .replaceAll(" ", "-")
-            //   .replaceAll(".", "-");
-            // const imageUrl = `https://cryptologos.cc/logos/${name}-logo.png?v=031`;
-            const symbolName = coin.symbol === "IOTA" ? "miota" : coin.symbol;
-            const imageUrl = `https://assets.coincap.io/assets/icons/${symbolName.toLowerCase()}@2x.png`;
-            // const imageUrl = `https://cryptofonts.com/img/icons/${symbolName.toLowerCase()}.svg`;
-            // const imageUrl = `https://assets.coingecko.com/coins/images/1/standard/bitcoin.png?1696501400${symbolName.toLowerCase()}.svg`;
-
             return (
               <TableRow key={crypto.randomUUID()}>
                 <TableCell className="text-center">{coin.rank}</TableCell>
@@ -55,7 +55,7 @@ export const CoinsTable = ({ data }: Props) => {
                       height={24}
                       width={24}
                       alt="hi"
-                      src={imageUrl}
+                      src={coin.imageUrl}
                       className="h-6 w-6"
                     />
                   </div>

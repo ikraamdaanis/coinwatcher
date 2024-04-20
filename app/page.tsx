@@ -1,14 +1,56 @@
 import { CoinsTable } from "app/CoinsTable";
-import { Coin } from "types";
+import { Coin, GeckoCoin } from "types";
 import { unstable_noStore as noStore } from "next/cache";
+import { normalise } from "utils/normalise";
+import { cache } from "react";
+
+const fetchGecko = cache(async () => {
+  try {
+    const response2 = await fetch(
+      `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=${process.env.GECKO_API_KEY}&vs_currency=usd&order=&per_page=1000`
+    );
+    const data2 = (await response2.json()) as GeckoCoin[];
+
+    if (!Array.isArray(data2)) {
+      const data = data2 as {
+        status: {
+          error_code: number;
+          error_message: string;
+        };
+      };
+
+      throw new Error(data.status.error_message);
+    }
+
+    return data2 || [];
+  } catch (error) {
+    const err = error as Error;
+    console.error(err.message);
+    return [];
+  }
+});
 
 async function fetchCoins() {
   noStore();
 
-  const response = await fetch("https://api.coincap.io/v2/assets?limit=1000");
-  const data = await response.json();
+  const response = await fetch("https://api.coincap.io/v2/assets?limit=100");
+  const data = (await response.json()) as { data: Coin[] };
 
-  return data as { data: Coin[] };
+  const coins = normalise(data.data, ["name", "symbol"]);
+
+  const geckoCoins = (await fetchGecko()) || [];
+
+  console.log("DATA2: ", geckoCoins);
+
+  (geckoCoins || [])?.forEach(coin => {
+    const index = `${coin.name.toLowerCase()}:${coin.symbol.toLowerCase()}`;
+    if (coins[index]) {
+      console.log("index: ", index);
+      coins[index].imageUrl = coin.image;
+    }
+  });
+
+  return { data: Object.values(coins) };
 }
 
 export default async function Page() {
