@@ -61,7 +61,8 @@ export const CoinsTable = ({ data }: Props) => {
                   </div>
                   <h2 className="items-center truncate font-medium">
                     {coin.name}{" "}
-                    <span className="ml-1 text-zinc-600">{coin.symbol}</span>
+                    <span className="ml-1 text-zinc-600">{coin.symbol}</span>{" "}
+                    {coin.id}
                   </h2>
                 </TableCell>
                 <TableCell className="text-right">

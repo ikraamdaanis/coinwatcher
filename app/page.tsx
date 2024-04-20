@@ -7,7 +7,7 @@ import { cache } from "react";
 const fetchGecko = cache(async () => {
   try {
     const response2 = await fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=${process.env.GECKO_API_KEY}&vs_currency=usd&order=&per_page=1000`
+      `https://api.coingecko.com/api/v3/coins/markets?x_cg_demo_api_key=${process.env.GECKO_API_KEY}&vs_currency=usd&order=market_cap_desc&per_page=20`
     );
     const data2 = (await response2.json()) as GeckoCoin[];
 
@@ -33,19 +33,19 @@ const fetchGecko = cache(async () => {
 async function fetchCoins() {
   noStore();
 
-  const response = await fetch("https://api.coincap.io/v2/assets?limit=100");
+  const response = await fetch("https://api.coincap.io/v2/assets?limit=10");
   const data = (await response.json()) as { data: Coin[] };
 
-  const coins = normalise(data.data, ["name", "symbol"]);
+  const coins = normalise(data.data, ["id"]);
 
   const geckoCoins = (await fetchGecko()) || [];
 
-  console.log("DATA2: ", geckoCoins);
-
+  console.log(Object.keys(coins));
+  console.log(geckoCoins.map(coin => coin.id.replace(/[^a-zA-Z]/g, "")));
   (geckoCoins || [])?.forEach(coin => {
-    const index = `${coin.name.toLowerCase()}:${coin.symbol.toLowerCase()}`;
+    const index = `${coin.id.replace(/[^a-zA-Z]/g, "")}`;
+
     if (coins[index]) {
-      console.log("index: ", index);
       coins[index].imageUrl = coin.image;
     }
   });
