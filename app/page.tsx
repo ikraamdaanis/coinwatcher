@@ -40,8 +40,6 @@ async function fetchCoins() {
 
   const geckoCoins = (await fetchGecko()) || [];
 
-  console.log(Object.keys(coins));
-  console.log(geckoCoins.map(coin => coin.id.replace(/[^a-zA-Z]/g, "")));
   (geckoCoins || [])?.forEach(coin => {
     const index = `${coin.id.replace(/[^a-zA-Z]/g, "")}`;
 
