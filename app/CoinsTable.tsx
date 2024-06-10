@@ -20,20 +20,6 @@ type Props = {
  * Displays the difference crypto currencies in a table.
  */
 export const CoinsTable = ({ data }: Props) => {
-  // useEffect(() => {
-  //   async function getIt() {
-  //     const geck = await fetch(
-  //       "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd"
-  //     );
-  //     const datageck = await geck.json();
-
-  //     console.log(datageck);
-  //   }
-
-  //   getIt();
-  //   // console.dir(data);
-  // }, [data]);
-
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-4 px-4 pb-4">
       <h1 className="mb-4 mt-10 text-center text-4xl font-semibold">
