@@ -15,6 +15,10 @@ import { formatUsd } from "utils/formatUsd";
 type Props = {
   data: Coin[];
 };
+
+/**
+ * Displays the difference crypto currencies in a table.
+ */
 export const CoinsTable = ({ data }: Props) => {
   // useEffect(() => {
   //   async function getIt() {
